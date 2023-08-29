@@ -298,11 +298,7 @@ VT100.prototype.getUserSettings = function() {
     this.disableAlt         = true;
   }
 
-  // Enable soft keyboard icon on some clients by default.
-  if (navigator.userAgent.match(/iPad|iPhone|iPod/i) != null ||
-      navigator.userAgent.match(/PlayStation Vita|Kindle/i) != null) {
     this.softKeyboard       = true;
-  }
 
   if (this.visualBell) {
     this.signature          = Math.floor(16807*this.signature + 1) %
@@ -784,6 +780,20 @@ VT100.prototype.initializeKeyboardButton = function() {
       }
       return false; }; }(this));
 
+  // Configure mouse event handlers for up button
+  this.addListener(this.upButton, 'click',
+    function(vt100) { return function(e) {
+	// send up press
+	vt100.keysPressed('\u001b[5~');
+      return false; }; }(this));
+
+  // Configure mouse event handlers for down button
+  this.addListener(this.downButton, 'click',
+    function(vt100) { return function(e) {
+	// send up press
+	vt100.keysPressed('\u001b[6~');
+      return false; }; }(this));
+
   // Enable button that displays keyboard
   if (this.softKeyboard) {
     this.keyboardImage.style.visibility = 'visible';
@@ -901,6 +911,7 @@ VT100.prototype.initializeElements = function(container) {
                        '<div id="scrollable">' +
                          '<table id="kbd_button">' +
                            '<tr><td width="100%">&nbsp;</td>' +
+			   '<td><img id="kbd_up_btn" src="pageup.gif" style="visibility: visible;"></td><td><img id="kbd_dn_btn" src="pagedown.gif" style="visibility: visible;"></td>' +
                            '<td><img id="kbd_img" src="keyboard.png" /></td>' +
                            '<td>&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>' +
                          '</table>' +
@@ -947,6 +958,8 @@ VT100.prototype.initializeElements = function(container) {
   this.menu                    = this.getChildById(this.container, 'menu');
   this.keyboard                = this.getChildById(this.container, 'keyboard');
   this.keyboardImage           = this.getChildById(this.container, 'kbd_img');
+  this.upButton		       = this.getChildById(this.container, 'kbd_up_btn');
+  this.downButton	       = this.getChildById(this.container, 'kbd_dn_btn');
   this.layout                  = this.getChildById(this.container, 'layout');
   this.scrollable              = this.getChildById(this.container,
                                                                  'scrollable');

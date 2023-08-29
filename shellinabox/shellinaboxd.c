@@ -703,6 +703,14 @@ static int shellInABoxHttpHandler(HttpConnection *http, void *arg,
     // Serve the keyboard icon
     serveStaticFile(http, "image/png", keyboardStart,
                     keyboardStart + keyboardSize - 1);
+  } else if (pathInfoLength == 10 && !memcmp(pathInfo, "pageup.gif", 10)) {
+    // Serve the pageup icon
+    serveStaticFile(http, "image/gif", keyboardStart,
+                    keyboardStart + keyboardSize - 1);
+  } else if (pathInfoLength == 12 && !memcmp(pathInfo, "pagedown.gif", 12)) {
+    // Serve the keyboard icon
+    serveStaticFile(http, "image/gif", keyboardStart,
+                    keyboardStart + keyboardSize - 1);
   } else if (pathInfoLength == 14 && !memcmp(pathInfo, "ShellInABox.js", 14)) {
     // Serve both vt100.js and shell_in_a_box.js in the same transaction.
     // Also, indicate to the client whether the server is SSL enabled.
